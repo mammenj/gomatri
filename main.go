@@ -16,10 +16,13 @@ type Film struct {
 //go:embed templates
 var templateFS embed.FS
 
+//go:embed static
+var staticFiles embed.FS
+
 func main() {
 	r := gin.Default()
 
-	r.StaticFS("/static", http.Dir("static"))
+	r.StaticFS("/static", http.FS(staticFiles))
 
 	r.GET("/", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
