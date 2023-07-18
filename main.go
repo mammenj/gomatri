@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"html/template"
+	"io/fs"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,16 +14,20 @@ type Film struct {
 	Director string
 }
 
-//go:embed templates
+//go:embed templates/*
 var templateFS embed.FS
 
-//go:embed static
+//go:embed static/*
 var staticFiles embed.FS
 
 func main() {
 	r := gin.Default()
+	static, err := fs.Sub(staticFiles, "static")
+	if err != nil {
+		panic(err)
+	}
 
-	r.StaticFS("/static", http.FS(staticFiles))
+	r.StaticFS("/static", http.FS(static))
 
 	r.GET("/", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
