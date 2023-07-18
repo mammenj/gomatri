@@ -42,7 +42,7 @@ func main() {
 		director := c.PostForm("director")
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/index.html"))
-		tmpl.ExecuteTemplate(c.Writer, "film-list-element", Film{Title: title, Director: director})
+		tmpl.ExecuteTemplate(c.Writer, "matri-list-element", Film{Title: title, Director: director})
 	})
 
 	r.Run()

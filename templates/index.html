@@ -11,26 +11,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="#">
     <script src="/static/htmx.min.js" type="application/javascript"></script>
+    <script src="/static/bootstrap.min.js" type="application/javascript"></script>
 </head>
 
-<body class="container">
-
+<body class="container-sm">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Matrimony</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="#">Premium Plans</a>
+                    <a class="nav-link disabled">Disabled</a>
+                </div>
+            </div>
+        </div>
+    </nav>
     <div class="row mt-4 g-4">
         <div class="col-8">
             <h1 class="mb-4">Matrimony List</h1>
-
             <ul class="list-group fs-5 me-5" id="film-list">
                 {{ range .Films }}
-                {{ block "film-list-element" .}}
+                {{ block "matri-list-element" .}}
                 <li class="list-group-item bg-primary text-white">{{ .Title }} - {{ .Director }}</li>
                 {{ end }}
                 {{ end }}
             </ul>
         </div>
-
         <div class="col-4">
             <h1 class="mb-4">Add</h1>
-
             <form hx-post="/films" hx-target="#film-list" hx-swap="beforeend" hx-indicator="#spinner">
                 <div class="mb-2">
                     <label for="film-title">Title</label>
@@ -40,7 +54,6 @@
                     <label for="film-director">Director</label>
                     <input type="text" name="director" id="film-director" class="form-control" />
                 </div>
-
                 <button type="submit" class="btn btn-primary">
                     <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status"
                         aria-hidden="true"></span>
@@ -48,9 +61,27 @@
                 </button>
             </form>
         </div>
-
+        <div class="row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Special Deals on Premium</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="btn btn-primary">See the deals</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Verify your ads</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="btn btn-primary">Go Verify</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
 </body>
 
 </html>
