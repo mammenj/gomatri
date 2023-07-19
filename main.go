@@ -33,6 +33,8 @@ func main() {
 
 	r.StaticFS("/static", http.FS(static))
 
+	/// TEST CODE FOR EMBED
+
 	r.GET("/", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/index.html"))
@@ -56,6 +58,8 @@ func main() {
 			"templates/index.html"))
 		tmpl.ExecuteTemplate(c.Writer, "matri-list-element", Film{Title: title, Director: director})
 	})
+
+	/// TEST CODE FOR EMBED END
 
 	r.POST("/users", handlers.CreateUser)
 	r.GET("/users", handlers.GetUsers)
