@@ -18,19 +18,16 @@ type AdSqlliteStore struct {
 }
 
 func NewSqliteAdsStore() *AdSqlliteStore {
-
 	db, err := gorm.Open(sqlite.Open("matri.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-
 	return &AdSqlliteStore{
 		DB: db,
 	}
 }
 
 func NewSqliteUserStore() *UserSqlliteStore {
-
 	db, err := gorm.Open(sqlite.Open("matri.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
@@ -54,7 +51,6 @@ func (us *UserSqlliteStore) Create(mu *models.User) (string, error) {
 }
 
 func (us *UserSqlliteStore) Get() ([]models.User, error) {
-
 	var users []models.User
 	log.Println("Get Users")
 	result := us.DB.Find(&users)
@@ -64,4 +60,36 @@ func (us *UserSqlliteStore) Get() ([]models.User, error) {
 	}
 	log.Println("...... Total records : ", result.RowsAffected)
 	return users, nil
+}
+
+func (us *UserSqlliteStore) Delete(id string) (string, error) {
+	log.Println("Delete Users ID: ", id)
+	result := us.DB.Delete(&models.User{}, id)
+
+	if result.Error != nil {
+		return "", result.Error
+	}
+	log.Println("...... Total deleted records : ", result.RowsAffected)
+	return id, nil
+}
+
+func (us *UserSqlliteStore) Update(mu *models.User) (uint, error) {
+	log.Println("Update Users ID: ", mu.ID)
+	result := us.DB.Save(mu)
+
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	log.Println("...... Total Updated records : ", result.RowsAffected)
+	return mu.ID, nil
+}
+
+func (us *UserSqlliteStore) GetOne(id string) (*models.User, error) {
+	log.Println("Get Users ID: ", id)
+	var user *models.User
+	result := us.DB.First(&user, id)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return user, nil
 }

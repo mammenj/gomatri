@@ -4,8 +4,28 @@ Content-Type: application/x-www-form-urlencoded
 
 Name=John
 &Password=1234
-&Email=pa@mammen.com
+&Email=1@mammen.com
 ###
 
 GET http://localhost:8080/users HTTP/1.1
+###
+
+
+
+PATCH  http://localhost:8080/users HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+ID=1
+&Name=John
+&Password=9999
+&Email=22@mammen.com
+
+###
+
+
+DELETE  http://localhost:8080/users/1 HTTP/1.1
+###
+
+
+GET http://localhost:8080/users/1 HTTP/1.1
 ###
