@@ -57,89 +57,11 @@ func main() {
 		tmpl.ExecuteTemplate(c.Writer, "matri-list-element", Film{Title: title, Director: director})
 	})
 
-	/* 	r.POST("/users", func(c *gin.Context) {
-		log.Println("IN Create handler")
-		var input models.User
-		if err := c.Bind(&input); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		userStore := storage.NewSqliteUserStore()
-		ID, createErr := userStore.Create(&input)
-		if createErr != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		fmt.Println("USER CREATED ID: ", ID)
-	}) */
-
-	/* 	r.GET("/users1", func(c *gin.Context) {
-		log.Println("IN GET handler")
-		userStore := storage.NewSqliteUserStore()
-		users, createErr := userStore.Get()
-		if createErr != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		fmt.Println("USER List", users)
-	}) */
-
 	r.POST("/users", handlers.CreateUser)
 	r.GET("/users", handlers.GetUsers)
 	r.PATCH("/users", handlers.UpdateUser)
 	r.DELETE("/users/:id", handlers.DeleteUser)
 	r.GET("/users/:id", handlers.GetUser)
-
-	/* 	r.PATCH("/users2", func(c *gin.Context) {
-		log.Println("IN PATCH  handler")
-		var input models.User
-		if err := c.Bind(&input); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		log.Println("IN PATCH  handler ", &input)
-		userStore := storage.NewSqliteUserStore()
-		ID, updatedErr := userStore.Update(&input)
-		if updatedErr != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		fmt.Println("USER Updated ID: ", ID)
-	}) */
-	/* r.DELETE("/users/:id", func(c *gin.Context) {
-
-		log.Println("IN Delete handler")
-
-		id := c.Param("id")
-
-		userStore := storage.NewSqliteUserStore()
-		ID, deleteErr := userStore.Delete(id)
-		if deleteErr != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		fmt.Println("USER deleted ID: ", ID)
-	}) */
-
-	/* 	r.GET("/users/:id", func(c *gin.Context) {
-
-		log.Println("IN GET one handler")
-		id := c.Param("id")
-
-		userStore := storage.NewSqliteUserStore()
-		user, err := userStore.GetOne(id)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		log.Println("...... Get user: ", user)
-	}) */
 
 	r.Run()
 }
