@@ -94,7 +94,7 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-
+		log.Println("IN PATCH  handler ", &input)
 		userStore := storage.NewSqliteUserStore()
 		ID, updatedErr := userStore.Update(&input)
 		if updatedErr != nil {
