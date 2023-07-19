@@ -3,8 +3,8 @@ POST http://localhost:8080/users HTTP/1.1
 Content-Type: application/x-www-form-urlencoded
 
 Name=John
-&Password=1234
-&Email=1@mammen.com
+&Password=4444
+&Email=4444@mammen.com
 ###
 
 GET http://localhost:8080/users HTTP/1.1
@@ -30,7 +30,7 @@ ID=2
 ###
 
 
-DELETE  http://localhost:8080/users/1 HTTP/1.1
+DELETE  http://localhost:8080/users/2 HTTP/1.1
 ###
 
 
