@@ -75,7 +75,6 @@ func (us *UserSqlliteStore) Delete(id string) (string, error) {
 
 func (us *UserSqlliteStore) Update(mu *models.User) (uint, error) {
 	log.Println("Update Users ID: ", mu.ID)
-	//result := us.DB.Save(mu)
 	result := us.DB.Updates(mu)
 
 	if result.Error != nil {
