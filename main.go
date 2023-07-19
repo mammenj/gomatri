@@ -2,14 +2,10 @@ package main
 
 import (
 	"embed"
-
 	"gomatri/handlers"
-
 	"html/template"
 	"io/fs"
-
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
