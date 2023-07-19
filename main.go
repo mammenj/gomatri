@@ -2,6 +2,9 @@ package main
 
 import (
 	"embed"
+	"fmt"
+	"gomatri/models"
+	"gomatri/storage"
 	"html/template"
 	"io/fs"
 	"net/http"
@@ -51,6 +54,36 @@ func main() {
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/index.html"))
 		tmpl.ExecuteTemplate(c.Writer, "matri-list-element", Film{Title: title, Director: director})
+	})
+
+	r.POST("/users", func(c *gin.Context) {
+
+		var input models.User
+		if err := c.Bind(&input); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		userStore := storage.NewSqliteUserStore()
+		ID, createErr := userStore.Create(&input)
+		if createErr != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		fmt.Println("USER CREATED ID: ", ID)
+	})
+
+	r.GET("/users", func(c *gin.Context) {
+
+		userStore := storage.NewSqliteUserStore()
+		users, createErr := userStore.Get()
+		if createErr != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		fmt.Println("USER List", users)
 	})
 
 	r.Run()
