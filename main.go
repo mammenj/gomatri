@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"io/fs"
 	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -57,11 +58,12 @@ func main() {
 
 	/// TEST CODE FOR EMBED END
 
-	r.POST("/users", handlers.CreateUser)
-	r.GET("/users", handlers.GetUsers)
-	r.PATCH("/users", handlers.UpdateUser)
-	r.DELETE("/users/:id", handlers.DeleteUser)
-	r.GET("/users/:id", handlers.GetUser)
+	userHandler := handlers.CreateNewUserHandler()
+	r.POST("/users", userHandler.CreateUser)
+	r.GET("/users", userHandler.GetUsers)
+	r.PATCH("/users", userHandler.UpdateUser)
+	r.DELETE("/users/:id", userHandler.DeleteUser)
+	r.GET("/users/:id", userHandler.GetUser)
 
 	r.Run()
 }

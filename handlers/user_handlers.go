@@ -10,10 +10,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetUsers(c *gin.Context) {
+type UserHandler struct {
+	store *storage.UserSqlliteStore
+}
+
+func CreateNewUserHandler() *UserHandler {
+	return &UserHandler{
+		store: storage.NewSqliteUserStore(),
+	}
+}
+
+func (uh *UserHandler) GetUsers(c *gin.Context) {
 	log.Println("IN GET handler")
-	userStore := storage.NewSqliteUserStore()
-	users, err := userStore.Get()
+
+	users, err := uh.store.Get()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -22,7 +32,7 @@ func GetUsers(c *gin.Context) {
 	fmt.Println("USER List", users)
 }
 
-func UpdateUser(c *gin.Context) {
+func (uh *UserHandler) UpdateUser(c *gin.Context) {
 	log.Println("IN PATCH  handler")
 	var input models.User
 	if err := c.Bind(&input); err != nil {
@@ -30,8 +40,7 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 	log.Println("IN PATCH  handler ", &input)
-	userStore := storage.NewSqliteUserStore()
-	ID, err := userStore.Update(&input)
+	ID, err := uh.store.Update(&input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -41,13 +50,12 @@ func UpdateUser(c *gin.Context) {
 
 }
 
-func DeleteUser(c *gin.Context) {
+func (uh *UserHandler) DeleteUser(c *gin.Context) {
 	log.Println("IN Delete handler")
 
 	id := c.Param("id")
 
-	userStore := storage.NewSqliteUserStore()
-	ID, err := userStore.Delete(id)
+	ID, err := uh.store.Delete(id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -55,12 +63,11 @@ func DeleteUser(c *gin.Context) {
 
 	fmt.Println("USER deleted ID: ", ID)
 }
-func GetUser(c *gin.Context) {
+func (uh *UserHandler) GetUser(c *gin.Context) {
 	log.Println("IN GET one handler")
 	id := c.Param("id")
 
-	userStore := storage.NewSqliteUserStore()
-	user, err := userStore.GetOne(id)
+	user, err := uh.store.GetOne(id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -69,7 +76,7 @@ func GetUser(c *gin.Context) {
 	log.Println("...... Get user: ", user)
 }
 
-func CreateUser(c *gin.Context) {
+func (uh *UserHandler) CreateUser(c *gin.Context) {
 	log.Println("IN Create handler")
 	var input models.User
 	if err := c.Bind(&input); err != nil {
@@ -77,8 +84,8 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	userStore := storage.NewSqliteUserStore()
-	ID, err := userStore.Create(&input)
+	//userStore := storage.NewSqliteUserStore()
+	ID, err := uh.store.Create(&input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
