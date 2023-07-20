@@ -23,6 +23,7 @@ var staticFiles embed.FS
 
 func main() {
 	r := gin.Default()
+
 	static, err := fs.Sub(staticFiles, "static")
 	if err != nil {
 		panic(err)
@@ -71,7 +72,6 @@ func main() {
 	r.PATCH("/ads", adHandler.UpdateAd)
 	r.DELETE("/ads/:id", adHandler.DeleteAd)
 	r.GET("/ads/:id", adHandler.GetAd)
-
 
 	r.Run()
 }

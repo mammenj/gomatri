@@ -18,6 +18,7 @@ type Ad struct {
 	Religiion   string `gorm:"not null"`
 	Cast        string `gorm:"not null"`
 	Height      int    `gorm:"not null"`
+	Email       string `gorm:"uniqueIndex"`
 	Job         string
 	JobType     string
 	Preferences string
@@ -27,6 +28,6 @@ type Ad struct {
 	Age         int    `gorm:"not null"`
 	Education   string `gorm:"not null"`
 	Other       string
-	Status      int   `gorm:"not null"`
-	User        *User `gorm:"omit empty; foreignKey:ID"`
+	Status      int  `gorm:"not null"`
+	UserID      uint `gorm:"omit empty; foreignKey:ID"`
 }

@@ -84,7 +84,6 @@ func (ah *AdHandler) CreateAd(c *gin.Context) {
 		return
 	}
 
-	//userStore := storage.NewSqliteUserStore()
 	ID, err := ah.store.Create(&input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
