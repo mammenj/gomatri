@@ -65,5 +65,13 @@ func main() {
 	r.DELETE("/users/:id", userHandler.DeleteUser)
 	r.GET("/users/:id", userHandler.GetUser)
 
+	adHandler := handlers.CreateNewAdHandler()
+	r.POST("/ads", adHandler.CreateAd)
+	r.GET("/ads", adHandler.GetAds)
+	r.PATCH("/ads", adHandler.UpdateAd)
+	r.DELETE("/ads/:id", adHandler.DeleteAd)
+	r.GET("/ads/:id", adHandler.GetAd)
+
+
 	r.Run()
 }

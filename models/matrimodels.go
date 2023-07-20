@@ -12,6 +12,9 @@ type User struct {
 
 type Ad struct {
 	gorm.Model
+	Name        string `gorm:"not null"`
+	Section     string `gorm:"not null"`
+	Gender      string `gorm:"not null"`
 	Religiion   string `gorm:"not null"`
 	Cast        string `gorm:"not null"`
 	Height      int    `gorm:"not null"`
@@ -24,6 +27,6 @@ type Ad struct {
 	Age         int    `gorm:"not null"`
 	Education   string `gorm:"not null"`
 	Other       string
-	Status      int  `gorm:"not null"`
-	User        User `gorm:"not null"`
+	Status      int   `gorm:"not null"`
+	User        *User `gorm:"omit empty; foreignKey:ID"`
 }

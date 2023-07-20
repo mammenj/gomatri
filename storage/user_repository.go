@@ -13,26 +13,12 @@ type UserSqlliteStore struct {
 	DB *gorm.DB
 }
 
-type AdSqlliteStore struct {
-	DB *gorm.DB
-}
-
-func NewSqliteAdsStore() *AdSqlliteStore {
-	db, err := gorm.Open(sqlite.Open("matri.db"), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
-	return &AdSqlliteStore{
-		DB: db,
-	}
-}
-
 func NewSqliteUserStore() *UserSqlliteStore {
 	db, err := gorm.Open(sqlite.Open("matri.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-
+	db.AutoMigrate(models.User{})
 	return &UserSqlliteStore{
 		DB: db,
 	}
@@ -40,7 +26,7 @@ func NewSqliteUserStore() *UserSqlliteStore {
 
 func (us *UserSqlliteStore) Create(mu *models.User) (string, error) {
 	log.Println("Before migrate......")
-	us.DB.AutoMigrate(mu)
+	//us.DB.AutoMigrate(mu)
 	log.Println("...... After migrate")
 	result := us.DB.Create(mu)
 	if result.Error != nil {
