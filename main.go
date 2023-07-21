@@ -48,6 +48,34 @@ func main() {
 
 	})
 
+	r.GET("/matri.html", func(c *gin.Context) {
+		tmpl := template.Must(template.ParseFS(templateFS,
+			"templates/matri.html"))
+		tmpl.Execute(c.Writer, nil)
+
+	})
+
+	r.GET("/contact.html", func(c *gin.Context) {
+		tmpl := template.Must(template.ParseFS(templateFS,
+			"templates/contact.html"))
+		tmpl.Execute(c.Writer, nil)
+
+	})
+
+	r.GET("/grooms.html", func(c *gin.Context) {
+		tmpl := template.Must(template.ParseFS(templateFS,
+			"templates/grooms.html"))
+		tmpl.Execute(c.Writer, nil)
+
+	})
+
+	r.GET("/brides.html", func(c *gin.Context) {
+		tmpl := template.Must(template.ParseFS(templateFS,
+			"templates/brides.html"))
+		tmpl.Execute(c.Writer, nil)
+
+	})
+
 	r.POST("/films", func(c *gin.Context) {
 
 		title := c.PostForm("title")

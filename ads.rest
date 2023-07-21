@@ -3,6 +3,7 @@
 	Section		string `gorm:"not null"`
 	Religiion   string `gorm:"not null"`
 	Cast        string `gorm:"not null"`
+    Email       string `gorm:"not null"`
 	Height      int    `gorm:"not null"`
 	Job         string
 	JobType     string
@@ -25,7 +26,7 @@ Name=John S Mammen
 &Gender=Male
 &Religiion=Christian
 &Cast=Marthoma
-&Email=33@mammen.com
+&Email=666@mammen.com
 &Height=165
 &Job=Architect         
 &JobType=Engineer
