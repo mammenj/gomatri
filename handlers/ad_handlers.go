@@ -23,13 +23,13 @@ func CreateNewAdHandler() *AdHandler {
 func (ah *AdHandler) GetAds(c *gin.Context) {
 	log.Println("IN GET handler")
 
-	users, err := ah.store.Get()
+	ads, err := ah.store.Get()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	fmt.Println("ADS List", users)
+	fmt.Println("ADS List", ads)
 }
 
 func (ah *AdHandler) UpdateAd(c *gin.Context) {

@@ -3,8 +3,11 @@ package main
 import (
 	"embed"
 	"gomatri/handlers"
+	"gomatri/models"
+	"gomatri/storage"
 	"html/template"
 	"io/fs"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -63,15 +66,32 @@ func main() {
 	})
 
 	r.GET("/grooms.html", func(c *gin.Context) {
+
+		adStore := storage.NewSqliteAdsStore()
+		ads, err := adStore.Get()
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		admap := map[string][]models.Ad{"Ads": ads}
+		log.Println("Ad Map", admap)
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/grooms.html"))
-		tmpl.Execute(c.Writer, nil)
+		tmpl.Execute(c.Writer, admap)
 
 	})
 
 	r.GET("/brides.html", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/brides.html"))
+		tmpl.Execute(c.Writer, nil)
+
+	})
+
+	r.GET("/ads.html", func(c *gin.Context) {
+		tmpl := template.Must(template.ParseFS(templateFS,
+			"templates/placead.html"))
 		tmpl.Execute(c.Writer, nil)
 
 	})
