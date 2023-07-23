@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Matri Mon Contact</title>
+    <title>Monay and Molay - Place Ads</title>
     <link href="/static/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <script src="/static/htmx.min.js" type="application/javascript"></script>
 </head>
@@ -15,10 +15,10 @@
     <main class="my-2">
         <div class="container">
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-3">
                     <img src="/static/images/placeads.jpg" alt="" class="img-fluid" />
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-9">
                     <h1 class="mt-2">Monay & Molay</h1>
                     <p class="mt-3">
                         Best place to find your match, no hassle of membership, pay only once!
@@ -40,12 +40,12 @@
                             </p>
                         </div>
                         <div class="col-sm-6 form-group">
-                            <label for="name-full">Full Name</label>
+                            <label for="name-full" class="form-label">Full Name</label>
                             <input type="text" class="form-control" name="Name" id="name-full"
                                 placeholder="Enter your full name." required>
                         </div>
                         <div class="col-sm-6 form-group">
-                            <label for="email">Email</label>
+                            <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" name="Email" id="email"
                                 placeholder="Enter your email." required>
                         </div>
@@ -55,30 +55,29 @@
                         </div>
 
                         <div class="col-sm-4 form-group">
-                            <label for="State">Age</label>
+                            <label for="State" class="form-label">Age</label>
                             <input type="number" class="form-control" name="Age" id="age" placeholder="Enter your age."
                                 required>
                         </div>
 
                         <div class="col-sm-4 form-group">
-                            <label for="State">Height</label>
+                            <label for="State" class="form-label">Height</label>
                             <input type="number" class="form-control" name="Height" id="height" placeholder="Enter your height in centimeters"
                                 required>
                         </div>
 
                         <div class="col-sm-4 form-group">
-                            <label for="Religion">Religion</label>
+                            <label for="Religion" class="form-label">Religion</label>
                             <select class="form-control custom-select browser-default" name="Religiion">
                                 <option value="Christian">Christian</option>
                                 <option value="Hindu">Hindu</option>
                                 <option value="Muslim">Muslim</option>
-                                <option value="Jain">Algeria</option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
                         <div class="col-sm-2 form-group">
-                            <label for="Caste">Cast/Denomination</label>
-                            <input type="cast" class="form-control" name="Cast" id="cast-1"
+                            <label for="Cast" class="form-label">Cast/Denomination</label>
+                            <input type="text" class="form-control" name="Cast" id="cast-1"
                                 placeholder="Add your caste or denomination like Catholic for Christian" required>
                         </div>
                         <div class="col-sm-6 form-group">
@@ -92,14 +91,14 @@
                                 placeholder="Enter your job Description" required>
                         </div>
                         <div class="col-sm-2 form-group">
-                            <label for="sex">Gender</label>
+                            <label for="sex" class="form-label">Gender</label>
                             <select id="sex" class="form-control browser-default custom-select" name="Gender">
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </select>
                         </div>
                         <div class="col-sm-2 form-group">
-                            <label for="cod">Select Ad Option</label>
+                            <label for="cod" class="form-label">Select Ad Option</label>
                             <select class="form-control browser-default custom-select" name="Section">
                                 <option value="Groom Wanted" selected>Groom Wanted
                                 </option>
@@ -107,12 +106,12 @@
                             </select>
                         </div>
                         <div class="col-sm-4 form-group">
-                            <label for="tel">Phone</label>
+                            <label for="tel" class="form-label">Phone</label>
                             <input type="tel" name="Phone1" class="form-control" id="tel"
                                 placeholder="Enter Your Contact Number." required>
                         </div>
                         <div class="col-sm-4 form-group">
-                            <label for="State">UserID</label>
+                            <label for="State" class="form-label">UserID</label>
                             <input type="number" class="form-control" name="UserID" id="height" placeholder="Enter your UserID"
                                 required>
                         </div>

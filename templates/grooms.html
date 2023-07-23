@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Matri Mon Grooms</title>
+    <title>Monay and Molay - Wanted Grooms</title>
     <link href="/static/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <script src="/static/htmx.min.js" type="application/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
@@ -19,10 +19,10 @@
     <main class="my-2">
         <div class="container">
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-3">
                     <img src="/static/images/molay2.jpg" alt="" class="img-fluid" />
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-9">
                     <h1 class="mt-2">Monay & Molay</h1>
                     <p class="mt-3">
                         Best place to find your match, no hassle of membership, pay only once!
@@ -31,25 +31,29 @@
                     <a href="/ads.html" class="btn btn-success"> Place your Ads now!!</a>
                 </div>
             </div>
-            <div class="row my-2">
-                <div class="list-group">
-                    {{ range .Ads }}
-                    {{ block "ads-list-element" .}}
-                    <div class="col-md-8">
-                    <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">{{.Section}} - {{.Name}} - {{.Religiion}}, {{.Cast}} </h5>
-                            <small>3 days ago</small>
-                        </div>
-                        <p class="mb-1">{{.Preferences}}</p>
-                        <small>{{.Description}} Job Details: {{.JobType}} {{.Job }} Education: {{.Education}}</small>
-                        <small>Ad: {{.ID}}</small>
-                    </a>
-        
-                    </div>
-                    {{end}}
-                    {{end}}
+            <div class="container">
+                <div class="row">
+                    <div class="list-group ">
+                        {{ range .Ads }}
+                        {{ block "ads-list-element" .}}
+                        <div class="col-sm">
+                            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-0">{{.Section}} - {{.Religiion}}, {{.Cast}} </h5>
+                                    <small>3 Views</small>
+                                </div>
+                                <p class="mb-0">{{.Preferences}}</p>
+                                <p class="mb-0">{{.Description}} </p>
+                                <p class="mb-0"><b>Job: </b>{{.JobType}} {{.Job }} </p>
+                                <p class="mb-0"><b>Education: </b>{{.Education}}</p>
+                                <p>Ad: {{.ID}}</p>
+                            </a>
 
+                        </div>
+                        {{end}}
+                        {{end}}
+
+                    </div>
                 </div>
             </div>
         </div>
