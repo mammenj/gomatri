@@ -38,15 +38,7 @@ func main() {
 	r.GET("/", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/index.html", "templates/header.html", "templates/footer.html"))
-
-		films := map[string][]Film{
-			"Films": {
-				{Title: "The Godfather", Director: "Francis Ford Coppola"},
-				{Title: "Blade Runner", Director: "Ridley Scott"},
-				{Title: "The Thing", Director: "John Carpenter"},
-			},
-		}
-		tmpl.Execute(c.Writer, films)
+		tmpl.Execute(c.Writer, nil)
 
 	})
 
