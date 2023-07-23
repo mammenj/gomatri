@@ -2,168 +2,75 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Matri Mon Home</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matri-mon</title>
     <link href="/static/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#">
     <script src="/static/htmx.min.js" type="application/javascript"></script>
+    <script src="/static/bootstrap.bundle.min.js" type="application/javascript"></script>
 </head>
 
 <body>
     {{ template "headerHTML" . }}
-    <!--     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="/">Monay&Molay</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/ads.html">Ads</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"  href="/grooms.html">Grooms Wanted</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"  href="/brides.html">Brides Wanted</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"   href="/contact.html">Contact</a>
-                        </li>
-
-                    </ul>
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button class="btn btn-outline-success" type="submit">
-                            Search
-                        </button>
-                    </form>
-                </div>
+    <div class="container">
+        <div class="row mt-4 g-4">
+            <div class="col-8">
+                <h1 class="mb-4">Matrimony List</h1>
+                <ul class="list-group fs-5 me-5" id="film-list">
+                    {{ range .Films }}
+                    {{ block "matri-list-element" .}}
+                    <li class="list-group-item bg-primary text-white">{{ .Title }} - {{ .Director }}</li>
+                    {{ end }}
+                    {{ end }}
+                </ul>
             </div>
-        </nav>
-    </header> -->
-    <main class="my-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-7">
-                    <img src="https://picsum.photos/id/233/600/400" alt="" class="img-fluid" />
-                </div>
-                <div class="col-md-5">
-                    <h1 class="mt-5">Matri Mon</h1>
-                    <p class="mt-4">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
-                        veniam suscipit accusantium quibusdam dicta nesciunt esse? Id
-                        itaque incidunt sint distinctio voluptatem tempore tempora aliquam
-                        sunt, vel, repellat velit. Vel!
-                    </p>
-                    <button type="button" class="btn btn-primary mt-3">
-                        Call to action!
+            <div class="col-4">
+                <h1 class="mb-4">Add</h1>
+                <form hx-post="/films" hx-target="#film-list" hx-swap="beforeend" hx-indicator="#spinner">
+                    <div class="mb-2">
+                        <label for="film-title">Title</label>
+                        <input type="text" name="title" id="film-title" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="film-director">Director</label>
+                        <input type="text" name="director" id="film-director" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status"
+                            aria-hidden="true"></span>
+                        Submit
                     </button>
-                </div>
+                </form>
             </div>
-            <div class="row my-5">
-                <div class="col">
-                    <div class="bg-secondary text-white my-3 py-3 card text-center">
+            <div class="row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <div class="card">
                         <div class="card-body">
-                            The only aggregate of all Matrimony at a fraction of the cost !!
+                            <h5 class="card-title">Special Deals on Premium</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.
+                            </p>
+                            <a href="#" class="btn btn-primary">See the deals</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Verify your ads</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.
+                            </p>
+                            <a href="#" class="btn btn-primary">Go Verify</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row my-5">
-                <div class="col">
-                    <div class="card-group">
-                        <div class="card">
-                            <img src="https://picsum.photos/id/200/320/200" class="card-img-top" alt="..." />
-                            <div class="card-body">
-                                <h5 class="card-title">Brides Wanted</h5>
-                                <p class="card-text">
-                                    This is a wider card with supporting text below as a natural
-                                    lead-in to additional content. This content is a little bit
-                                    longer.
-                                </p>
-
-                                <div class="">
-                                    <a href="#"><button type="button" class="btn btn-primary">
-                                            See more
-                                        </button></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <img src="https://picsum.photos/id/201/320/200" class="card-img-top" alt="..." />
-                            <div class="card-body">
-                                <h5 class="card-title">Grooms Wanted</h5>
-                                <p class="card-text">
-                                    This card has supporting text below as a natural lead-in to
-                                    additional content.
-                                </p>
-
-                                <div class="">
-                                    <a href="#"><button type="button" class="btn btn-primary">
-                                            See more
-                                        </button></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center">
-                <h2>Get in touch</h2>
-                <p class="lead">Questions? Do not hesitate to contact us.</p>
-            </div>
-            <div class="row justify-content-center my-5">
-                <div class="col-lg-6">
-                    <form action="">
-                        <label for="email" class="form-label">Email:</label>
-                        <input type="email" id="email" placeholder="my@email.com" class="form-control" />
-                        <div class="form-floating my-5">
-                            <input type="name" id="name" placeholder="e.g. Dawid" class="form-control" />
-                            <label for="name" class="form-label">Name:</label>
-                        </div>
-                        <label for="subject" class="form=label">Subject</label>
-                        <select name="subject" id="subject" class="form-select">
-                            <option value="pricing">Pricing</option>
-                            <option value="technical" selected>Technical question</option>
-                            <option value="other">Other</option>
-                        </select>
-
-                        <div class="form-floating my-5">
-                            <textarea name="query" id="query" style="height: 150px" class="form-control"
-                                placeholder="Write a message"></textarea>
-
-                            <label for="query">Write a message</label>
-                        </div>
-
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Send!</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
-    </main>
-<!--     <footer class="footer mt-auto py-3 bg-dark">
-        <div class="container">
-            <span class="text-muted">Copyrights
-                <a href="/">Matri-go</a></span>
-        </div>
-    </footer> -->
-
-    {{ template "footerHTML" . }}
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
-        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
-        crossorigin="anonymous"></script>
-    <script src="/static/bootstrap.bundle.min.js" type="application/javascript"></script>
+        {{ template "footerHTML" . }}
+        <script src="/static/bootstrap.bundle.min.js" type="application/javascript"></script>
 </body>
 
 </html>
