@@ -7,7 +7,6 @@ import (
 	"gomatri/storage"
 	"html/template"
 	"io/fs"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -38,7 +37,7 @@ func main() {
 
 	r.GET("/", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
-			"templates/index.html"))
+			"templates/index.html", "templates/header.html", "templates/footer.html"))
 
 		films := map[string][]Film{
 			"Films": {
@@ -52,15 +51,16 @@ func main() {
 	})
 
 	r.GET("/matri.html", func(c *gin.Context) {
+
 		tmpl := template.Must(template.ParseFS(templateFS,
-			"templates/matri.html"))
+			"templates/matri.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, nil)
 
 	})
 
 	r.GET("/contact.html", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
-			"templates/contact.html"))
+			"templates/contact.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, nil)
 
 	})
@@ -75,23 +75,31 @@ func main() {
 			return
 		}
 		admap := map[string][]models.Ad{"Ads": ads}
-		log.Println("Ad Map", admap)
+		//log.Println("Ad Map", admap)
 		tmpl := template.Must(template.ParseFS(templateFS,
-			"templates/grooms.html"))
+			"templates/grooms.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, admap)
 
 	})
 
 	r.GET("/brides.html", func(c *gin.Context) {
+		adStore := storage.NewSqliteAdsStore()
+		ads, err := adStore.Get()
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		admap := map[string][]models.Ad{"Ads": ads}
 		tmpl := template.Must(template.ParseFS(templateFS,
-			"templates/brides.html"))
-		tmpl.Execute(c.Writer, nil)
+			"templates/brides.html", "templates/header.html", "templates/footer.html"))
+		tmpl.Execute(c.Writer, admap)
 
 	})
 
 	r.GET("/ads.html", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
-			"templates/placead.html"))
+			"templates/placead.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, nil)
 
 	})
@@ -101,7 +109,7 @@ func main() {
 		title := c.PostForm("title")
 		director := c.PostForm("director")
 		tmpl := template.Must(template.ParseFS(templateFS,
-			"templates/index.html"))
+			"templates/index.html", "templates/header.html", "templates/footer.html"))
 		tmpl.ExecuteTemplate(c.Writer, "matri-list-element", Film{Title: title, Director: director})
 	})
 

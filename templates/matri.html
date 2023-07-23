@@ -11,7 +11,8 @@
 </head>
 
 <body>
-    <header>
+    {{ template "headerHTML" . }}
+    <!--     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" href="/">Monay&Molay</a>
@@ -48,7 +49,7 @@
                 </div>
             </div>
         </nav>
-    </header>
+    </header> -->
     <main class="my-5">
         <div class="container">
             <div class="row">
@@ -151,17 +152,17 @@
             </div>
         </div>
     </main>
-    <footer class="footer mt-auto py-3 bg-dark">
+<!--     <footer class="footer mt-auto py-3 bg-dark">
         <div class="container">
             <span class="text-muted">Copyrights
                 <a href="/">Matri-go</a></span>
         </div>
-    </footer>
-    <script
-    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
-    integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
-    crossorigin="anonymous"
-  ></script>
+    </footer> -->
+
+    {{ template "footerHTML" . }}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
     <script src="/static/bootstrap.bundle.min.js" type="application/javascript"></script>
 </body>
 
