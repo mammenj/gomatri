@@ -44,13 +44,16 @@ Name=John S Mammen
 GET http://localhost:8080/ads HTTP/1.1
 
 ###
-GET http://localhost:8080/ads/2 HTTP/1.1
+GET http://localhost:8080/ads/6 HTTP/1.1
 
 ###
 
 PATCH  http://localhost:8080/ads HTTP/1.1
 Content-Type: application/x-www-form-urlencoded
 
-ID=1
-&Description=This is description of Ad 1
+ID=8
+&Section=Groom Wanted
 ###
+
+###
+DELETE  http://localhost:8080/ads/6 HTTP/1.1

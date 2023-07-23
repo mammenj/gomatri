@@ -78,11 +78,16 @@ func (ah *AdHandler) GetAd(c *gin.Context) {
 
 func (ah *AdHandler) CreateAd(c *gin.Context) {
 	log.Println("IN Create AD handler")
+	c.Request.ParseForm()
+	for key, value := range c.Request.PostForm {
+		fmt.Println(key,value)
+	}
 	var input models.Ad
 	if err := c.Bind(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	log.Println("In POST AD hanlder INPUT IS :", input)
 
 	ID, err := ah.store.Create(&input)
 	if err != nil {

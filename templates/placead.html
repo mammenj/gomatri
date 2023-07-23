@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="container my-3 bg-dark-subtle">
-                <form>
+                <form hx-post="/ads">
                     <div class="row g-3">
                         <div class="col-sm-12">
                             <h2 class="text-center text-bg-dark">Place your ads</h2>
@@ -41,28 +41,34 @@
                         </div>
                         <div class="col-sm-6 form-group">
                             <label for="name-full">Full Name</label>
-                            <input type="text" class="form-control" name="fullname" id="name-full"
+                            <input type="text" class="form-control" name="Name" id="name-full"
                                 placeholder="Enter your full name." required>
                         </div>
                         <div class="col-sm-6 form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" name="email" id="email"
+                            <input type="email" class="form-control" name="Email" id="email"
                                 placeholder="Enter your email." required>
                         </div>
                         <div class="col-sm-12 form-group">
                             <label for="ad-descripion" class="form-label">Ad Description</label>
-                            <textarea class="form-control" id="ad-descripion" rows="3"></textarea>
+                            <textarea class="form-control" id="ad-descripion" rows="3"  name="Description"></textarea>
                         </div>
 
                         <div class="col-sm-4 form-group">
                             <label for="State">Age</label>
-                            <input type="number" class="form-control" name="age" id="age" placeholder="Enter your age."
+                            <input type="number" class="form-control" name="Age" id="age" placeholder="Enter your age."
+                                required>
+                        </div>
+
+                        <div class="col-sm-4 form-group">
+                            <label for="State">Height</label>
+                            <input type="number" class="form-control" name="Height" id="height" placeholder="Enter your height in centimeters"
                                 required>
                         </div>
 
                         <div class="col-sm-4 form-group">
                             <label for="Religion">Religion</label>
-                            <select class="form-control custom-select browser-default">
+                            <select class="form-control custom-select browser-default" name="Religiion">
                                 <option value="Christian">Christian</option>
                                 <option value="Hindu">Hindu</option>
                                 <option value="Muslim">Muslim</option>
@@ -72,45 +78,50 @@
                         </div>
                         <div class="col-sm-2 form-group">
                             <label for="Caste">Cast/Denomination</label>
-                            <input type="cast" class="form-control" name="cast" id="cast-1"
+                            <input type="cast" class="form-control" name="Cast" id="cast-1"
                                 placeholder="Add your caste or denomination like Catholic for Christian" required>
                         </div>
                         <div class="col-sm-6 form-group">
                             <label for="education" class="form-label">Education</label>
-                            <input type="text" class="form-control" id="education" placeholder="Enter your education">
+                            <input type="text" class="form-control" id="education" name="Education" placeholder="Enter your education">
                         </div>
 
                         <div class="col-sm-6 form-group">
                             <label for="job" class="form-label">Job</label>
-                            <input type="text" name="job" class="form-control" id="job"
+                            <input type="text" name="Job" class="form-control" id="job"
                                 placeholder="Enter your job Description" required>
                         </div>
                         <div class="col-sm-2 form-group">
                             <label for="sex">Gender</label>
-                            <select id="sex" class="form-control browser-default custom-select">
+                            <select id="sex" class="form-control browser-default custom-select" name="Gender">
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </select>
                         </div>
                         <div class="col-sm-2 form-group">
                             <label for="cod">Select Ad Option</label>
-                            <select class="form-control browser-default custom-select">
-                                <option data-section="Grooms+Wanted" value="Grooms+Wanted" selected>Grooms Wanted
+                            <select class="form-control browser-default custom-select" name="Section">
+                                <option value="Groom Wanted" selected>Groom Wanted
                                 </option>
-                                <option data-section="Brides" value="Brides+Wanted">Brides Wanted</option>
+                                <option value="Bride Wanted">Bride Wanted</option>
                             </select>
                         </div>
                         <div class="col-sm-4 form-group">
                             <label for="tel">Phone</label>
-                            <input type="tel" name="phone" class="form-control" id="tel"
+                            <input type="tel" name="Phone1" class="form-control" id="tel"
                                 placeholder="Enter Your Contact Number." required>
                         </div>
+                        <div class="col-sm-4 form-group">
+                            <label for="State">UserID</label>
+                            <input type="number" class="form-control" name="UserID" id="height" placeholder="Enter your UserID"
+                                required>
+                        </div>
                         <div class="col-sm-12">
-                            <input type="checkbox" class="form-check d-inline" id="chb" required><label for="chb"
+                            <input type="checkbox" class="form-check d-inline" name="terms" id="chb" required><label for="chb"
                                 class="form-check-label">&nbsp;I accept all terms and conditions.
                             </label>
                         </div>
-
+              
                         <div class="col-sm-12 form-group mb-2 my-2">
                             <button class="btn btn-primary float-right">Submit</button>
                         </div>
