@@ -1,4 +1,5 @@
-### 	gorm.Model
+### 	
+	gorm.Model
 	Name        string `gorm:"not null"`
 	Section		string `gorm:"not null"`
 	Religiion   string `gorm:"not null"`

@@ -2,23 +2,29 @@
 POST http://localhost:8080/users HTTP/1.1
 Content-Type: application/x-www-form-urlencoded
 
-Name=John
-&Password=111
-&Email=111@mammen.com
+Username=rose2
+&Password=222
+&Email=222@email.com
 ###
 
 GET http://localhost:8080/users HTTP/1.1
 ###
 
 
-
+####
+    UID      uuid.UUID `json:"uuid"`
+	Username string    `json:"username" binding:"required"`
+	Password string    `json:"password" binding:"required"`
+	Message  string    `json:"message"`
+	Email    string    `json:"email"`
+/////
+###
 PATCH  http://localhost:8080/users HTTP/1.1
 Content-Type: application/x-www-form-urlencoded
 
-ID=2
-&Name=John
-&Password=9999
-&Email=11@mammen.com
+ID=6
+&Username=rose2
+&Email=555@email.com
 
 ###
 
@@ -26,7 +32,7 @@ PATCH  http://localhost:8080/users HTTP/1.1
 Content-Type: application/x-www-form-urlencoded
 
 ID=2
-&Password=111
+&Email=222@email.com
 ###
 
 

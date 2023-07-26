@@ -26,6 +26,10 @@ var staticFiles embed.FS
 func main() {
 	r := gin.Default()
 
+	r.Use(func(c *gin.Context) {
+		c.Header("User-Agent", "Unreal-molay")
+	})
+
 	static, err := fs.Sub(staticFiles, "static")
 	if err != nil {
 		panic(err)
@@ -39,29 +43,23 @@ func main() {
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/index.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, nil)
-
 	})
 
 	r.GET("/matri.html", func(c *gin.Context) {
-
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/matri.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, nil)
-
 	})
 
 	r.GET("/contact.html", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/contact.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, nil)
-
 	})
 
 	r.GET("/grooms.html", func(c *gin.Context) {
-
 		adStore := storage.NewSqliteAdsStore()
 		ads, err := adStore.Get()
-
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -71,13 +69,11 @@ func main() {
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/grooms.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, admap)
-
 	})
 
 	r.GET("/brides.html", func(c *gin.Context) {
 		adStore := storage.NewSqliteAdsStore()
 		ads, err := adStore.Get()
-
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -86,18 +82,15 @@ func main() {
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/brides.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, admap)
-
 	})
 
 	r.GET("/ads.html", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/placead.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, nil)
-
 	})
 
 	r.POST("/films", func(c *gin.Context) {
-
 		title := c.PostForm("title")
 		director := c.PostForm("director")
 		tmpl := template.Must(template.ParseFS(templateFS,

@@ -1,0 +1,12 @@
+{
+    "serverhost": "localhost",
+    "serverport": "8080",
+    "dbhost": "localhost",
+    "dbuser": "postgres",
+    "dbpassword": "12345",
+    "dbport": "5432",
+    "db": "users",
+    "dbengine": "postgres",
+    "jwtsecret": "mypass",
+    "dbssl": "disable"
+}

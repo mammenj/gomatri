@@ -6,7 +6,12 @@ import (
 	"log"
 
 	"gorm.io/driver/sqlite"
+	//"github.com/glebarez/sqlite"
+	//"database/sql"
+
 	"gorm.io/gorm"
+
+	//_ "modernc.org/sqlite"
 )
 
 type UserSqlliteStore struct {
@@ -18,16 +23,15 @@ func NewSqliteUserStore() *UserSqlliteStore {
 	if err != nil {
 		panic("failed to connect database")
 	}
+	log.Println("Before migrate......")
 	db.AutoMigrate(models.User{})
+	log.Println("...... After migrate")
 	return &UserSqlliteStore{
 		DB: db,
 	}
 }
 
 func (us *UserSqlliteStore) Create(mu *models.User) (string, error) {
-	log.Println("Before migrate......")
-	//us.DB.AutoMigrate(mu)
-	log.Println("...... After migrate")
 	result := us.DB.Create(mu)
 	if result.Error != nil {
 		return "", result.Error
@@ -40,7 +44,6 @@ func (us *UserSqlliteStore) Get() ([]models.User, error) {
 	var users []models.User
 	log.Println("Get Users")
 	result := us.DB.Find(&users)
-
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -51,7 +54,6 @@ func (us *UserSqlliteStore) Get() ([]models.User, error) {
 func (us *UserSqlliteStore) Delete(id string) (string, error) {
 	log.Println("Delete Users ID: ", id)
 	result := us.DB.Delete(&models.User{}, id)
-
 	if result.Error != nil {
 		return "", result.Error
 	}
@@ -62,7 +64,6 @@ func (us *UserSqlliteStore) Delete(id string) (string, error) {
 func (us *UserSqlliteStore) Update(mu *models.User) (uint, error) {
 	log.Println("Update Users ID: ", mu.ID)
 	result := us.DB.Updates(mu)
-
 	if result.Error != nil {
 		return 0, result.Error
 	}

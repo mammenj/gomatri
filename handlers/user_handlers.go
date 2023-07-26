@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"gomatri/models"
+	"gomatri/security"
 	"gomatri/storage"
 	"log"
 	"net/http"
@@ -29,25 +30,26 @@ func (uh *UserHandler) GetUsers(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("USER List", users)
+	//fmt.Println("USER List", users)
+	c.JSON(http.StatusOK, &users)
 }
 
 func (uh *UserHandler) UpdateUser(c *gin.Context) {
 	log.Println("IN PATCH  handler")
-	var input models.User
-	if err := c.Bind(&input); err != nil {
+	var user models.User
+	if err := c.Bind(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	log.Println("IN PATCH  handler ", &input)
-	ID, err := uh.store.Update(&input)
+	user.Password = security.HashAndSalt([]byte(user.Password))
+	log.Println("IN PATCH  handler ", &user)
+	ID, err := uh.store.Update(&user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	fmt.Println("USER Updated ID: ", ID)
-
+	c.JSON(http.StatusOK, &user)
 }
 
 func (uh *UserHandler) DeleteUser(c *gin.Context) {
@@ -62,6 +64,7 @@ func (uh *UserHandler) DeleteUser(c *gin.Context) {
 	}
 
 	fmt.Println("USER deleted ID: ", ID)
+	c.JSON(http.StatusOK, "Deleted User ID: "+ID)
 }
 func (uh *UserHandler) GetUser(c *gin.Context) {
 	log.Println("IN GET one handler")
@@ -74,22 +77,28 @@ func (uh *UserHandler) GetUser(c *gin.Context) {
 	}
 
 	log.Println("...... Get user: ", user)
+	c.JSON(http.StatusOK, &user)
 }
 
 func (uh *UserHandler) CreateUser(c *gin.Context) {
-	log.Println("IN Create handler")
-	var input models.User
-	if err := c.Bind(&input); err != nil {
+	log.Println("IN Create handler User")
+
+	log.Println("CreateUser in db")
+
+	var user models.User
+	if err := c.Bind(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	//userStore := storage.NewSqliteUserStore()
-	ID, err := uh.store.Create(&input)
+	log.Println("CreateUser bound user", user)
+	user.Password = security.HashAndSalt([]byte(user.Password))
+	ID, err := uh.store.Create(&user)
+	log.Println("CreateUser user hashed password", user.Password)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	fmt.Println("USER CREATED ID: ", ID)
+	c.JSON(http.StatusOK, &user)
 }
