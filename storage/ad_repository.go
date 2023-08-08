@@ -49,6 +49,20 @@ func (as *AdSqlliteStore) Get() ([]models.Ad, error) {
 	return ads, nil
 }
 
+func (as *AdSqlliteStore) GetSection(section string) ([]models.Ad, error) {
+	var ads []models.Ad
+	log.Println("Get Ads section ", section)
+	// result := as.DB.Find(&ads)
+	//"name LIKE ?", "%jin%"
+	result := as.DB.Where("section = ?", section).Find(&ads)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	log.Println("...... Total records ADS : ", result.RowsAffected)
+	return ads, nil
+}
+
 func (as *AdSqlliteStore) Delete(id string) (string, error) {
 	log.Println("Delete AD ID: ", id)
 	result := as.DB.Delete(&models.Ad{}, id)

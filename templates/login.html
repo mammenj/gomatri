@@ -5,13 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monay and Molay</title>
+    <title>MinnaMinni</title>
     <link href="/static/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="#">
     <script src="/static/htmx.min.js" type="application/javascript"></script>
-    <script src="/static/bootstrap.bundle.min.js" type="application/javascript"></script>
 </head>
 
 <body>
@@ -29,15 +28,15 @@
                 </ul>
             </div>
             <div class="col-4">
-                <h1 class="mb-4">Add</h1>
+                <h1 class="mb-4">Login</h1>
                 <form hx-post="/films" hx-target="#film-list" hx-swap="beforeend" hx-indicator="#spinner">
                     <div class="mb-2">
-                        <label for="film-title">Title</label>
-                        <input type="text" name="title" id="film-title" class="form-control" />
+                        <label for="film-title">Email</label>
+                        <input type="text" name="email" id="email" class="form-control" />
                     </div>
                     <div class="mb-3">
-                        <label for="film-director">Director</label>
-                        <input type="text" name="director" id="film-director" class="form-control" />
+                        <label for="film-director">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" />
                     </div>
                     <button type="submit" class="btn btn-primary">
                         <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status"

@@ -59,7 +59,7 @@ func main() {
 
 	r.GET("/grooms.html", func(c *gin.Context) {
 		adStore := storage.NewSqliteAdsStore()
-		ads, err := adStore.Get()
+		ads, err := adStore.GetSection("Groom Wanted")
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -73,7 +73,7 @@ func main() {
 
 	r.GET("/brides.html", func(c *gin.Context) {
 		adStore := storage.NewSqliteAdsStore()
-		ads, err := adStore.Get()
+		ads, err := adStore.GetSection("Bride Wanted")
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -96,6 +96,12 @@ func main() {
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/index.html", "templates/header.html", "templates/footer.html"))
 		tmpl.ExecuteTemplate(c.Writer, "matri-list-element", Film{Title: title, Director: director})
+	})
+
+	r.GET("/login.html", func(c *gin.Context) {
+		tmpl := template.Must(template.ParseFS(templateFS,
+			"templates/login.html", "templates/header.html", "templates/footer.html"))
+		tmpl.Execute(c.Writer, nil)
 	})
 
 	/// TEST CODE FOR EMBED END
