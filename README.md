@@ -9,3 +9,7 @@ ngrok config add-authtoken
 
 
 ngrok http --domain=kingfish-smart-formally.ngrok-free.app 8080
+
+
+cd ~/Documents/ngrok
+./ngrok http --domain=kingfish-smart-formally.ngrok-free.app 8080

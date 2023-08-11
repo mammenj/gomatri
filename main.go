@@ -4,10 +4,13 @@ import (
 	"embed"
 	"gomatri/handlers"
 	"gomatri/models"
+	"gomatri/security"
 	"gomatri/storage"
 	"html/template"
 	"io/fs"
+	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -59,7 +62,10 @@ func main() {
 
 	r.GET("/grooms.html", func(c *gin.Context) {
 		adStore := storage.NewSqliteAdsStore()
-		ads, err := adStore.GetSection("Groom Wanted")
+		offset := c.Query("offset")
+		offsetInt, _ := strconv.Atoi(offset)
+		log.Println(" Groom offset ", offset)
+		ads, err := adStore.GetSection("Groom Wanted", offsetInt)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -73,7 +79,10 @@ func main() {
 
 	r.GET("/brides.html", func(c *gin.Context) {
 		adStore := storage.NewSqliteAdsStore()
-		ads, err := adStore.GetSection("Bride Wanted")
+		offset := c.Query("offset")
+		offsetInt, _ := strconv.Atoi(offset)
+		log.Println(" Bride offset ", offset)
+		ads, err := adStore.GetSection("Bride Wanted", offsetInt)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -112,6 +121,7 @@ func main() {
 	r.PATCH("/users", userHandler.UpdateUser)
 	r.DELETE("/users/:id", userHandler.DeleteUser)
 	r.GET("/users/:id", userHandler.GetUser)
+	r.POST("/login", security.Login)
 
 	adHandler := handlers.CreateNewAdHandler()
 	r.POST("/ads", adHandler.CreateAd)

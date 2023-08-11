@@ -10,12 +10,11 @@ import (
 // User "Object
 type User struct {
 	gorm.Model
-	//UID      uuid.UUID `json:"uuid"`
-	Username string    `json:"username" binding:"required"`
-	Password string    `json:"password"`
-	Message  string    `json:"message"`
-	Email    string    `gorm:"uniqueIndex" json:"email"`
-
+	Name     string `json:"name"`
+	Email    string `gorm:"uniqueIndex" json:"email"`
+	Password string `json:"password"`
+	Role     string `json:"role"`
+	Status   string `json:"status"`
 }
 
 // BeforeCreate BeforeCreate
@@ -30,4 +29,3 @@ type User struct {
 	scope.Statement.SetColumn("UpdatedAt", time.Now())
 	return nil
 } */
-

@@ -2,9 +2,22 @@
 POST http://localhost:8080/users HTTP/1.1
 Content-Type: application/x-www-form-urlencoded
 
-Username=rose2
-&Password=222
-&Email=222@email.com
+Email=444@email.com
+&Password=444
+&Email=444@email.com
+&Name=john444
+&Role=admin
+&Status=active
+###
+
+###
+POST http://localhost:8080/login HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+Email=333@email.com
+&Password=333
+
+
 ###
 
 GET http://localhost:8080/users HTTP/1.1

@@ -49,12 +49,11 @@ func (as *AdSqlliteStore) Get() ([]models.Ad, error) {
 	return ads, nil
 }
 
-func (as *AdSqlliteStore) GetSection(section string) ([]models.Ad, error) {
+func (as *AdSqlliteStore) GetSection(section string, offset int) ([]models.Ad, error) {
 	var ads []models.Ad
 	log.Println("Get Ads section ", section)
-	// result := as.DB.Find(&ads)
-	//"name LIKE ?", "%jin%"
-	result := as.DB.Where("section = ?", section).Find(&ads)
+	// db.Limit(10).Offset(5).Find(&users)
+	result := as.DB.Limit(10).Offset(offset).Where("section = ?", section).Find(&ads)
 
 	if result.Error != nil {
 		return nil, result.Error
