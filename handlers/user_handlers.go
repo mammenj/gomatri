@@ -87,7 +87,8 @@ func (uh *UserHandler) CreateUser(c *gin.Context) {
 
 	var user models.User
 	if err := c.Bind(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		//c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		c.String(http.StatusOK, err.Error(), nil)
 		return
 	}
 	log.Println("CreateUser bound user", user)
@@ -95,10 +96,10 @@ func (uh *UserHandler) CreateUser(c *gin.Context) {
 	ID, err := uh.store.Create(&user)
 	log.Println("CreateUser user hashed password", user.Password)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.String(http.StatusOK, err.Error(), nil)
 		return
 	}
 
 	fmt.Println("USER CREATED ID: ", ID)
-	c.JSON(http.StatusOK, &user)
+	c.String(http.StatusOK, "User created ID:: "+ID, "Keep the ID for reference")
 }

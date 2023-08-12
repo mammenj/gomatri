@@ -13,8 +13,9 @@ type User struct {
 	Name     string `json:"name"`
 	Email    string `gorm:"uniqueIndex" json:"email"`
 	Password string `json:"password"`
-	Role     string `json:"role"`
-	Status   string `json:"status"`
+	Role     string `json:"role" gorm:"default:user"`
+	Status   string `json:"status" gorm:"default:inactive"`
+	Message  string `json:"message" `
 }
 
 // BeforeCreate BeforeCreate

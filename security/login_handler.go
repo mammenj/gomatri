@@ -3,6 +3,7 @@ package security
 import (
 	"gomatri/models"
 	"gomatri/storage"
+	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -12,19 +13,22 @@ import (
 	"errors"
 	//"fmt"
 	"log"
-	"net/http"
+	//"net/http"
 	"time"
 )
 
 // Login for JWT
 func Login(c *gin.Context) {
 	// get the user from db
-	var user models.User
+	//var user *models.User
 	user, err := loginUser(c)
 
 	if err != nil {
 		log.Println("Error when  trying to log in :", err)
-		c.JSON(500, gin.H{"message": "Invalid User or Password"})
+		//c.JSON(200, gin.H{"message": "Invalid User or Password"})
+		//errMessage := "Invalid user/password for " + user.Email
+		//c.HTML(http.StatusOK, "templates/user.html", err)
+		c.String(http.StatusOK, err.Error(), nil)
 		return
 	}
 	// Create the token
@@ -60,19 +64,20 @@ func Login(c *gin.Context) {
 		return
 	}
 	c.Header("token", tokenString)
-	c.JSON(200, gin.H{"token": tokenString})
+	//c.JSON(200, gin.H{"token": tokenString})
+	c.String(http.StatusOK, tokenString, nil)
 }
 
 // Login get the User by username/password
-func loginUser(c *gin.Context) (models.User, error) {
+func loginUser(c *gin.Context) (*models.User, error) {
 	log.Println("loginUser username :")
 	var user models.User
 	if err := c.Bind(&user); err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
+		// c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+		// 	"error": err.Error(),
+		// })
 		log.Println("Failed to bind user from context", user)
-		return user, err
+		return nil, err
 	}
 	log.Println("loginUser username :", user)
 	username := user.Email
@@ -81,8 +86,8 @@ func loginUser(c *gin.Context) (models.User, error) {
 	store := storage.NewSqliteUserStore()
 	if err := store.DB.Where("email = ?", username).First(&user).Error; err != nil {
 		log.Println("Failed to GetUser in db")
-		c.AbortWithStatus(http.StatusNotFound)
-		return user, err
+		//c.AbortWithStatus(http.StatusNotFound)
+		return nil, err
 	}
 
 	// db := db.GetDB()
@@ -93,7 +98,7 @@ func loginUser(c *gin.Context) (models.User, error) {
 	// }
 	success := comparePasswords(user.Password, []byte(password))
 	if !success {
-		return user, errors.New("invalid password")
+		return nil, errors.New("invalid password")
 	}
-	return user, nil
+	return &user, nil
 }

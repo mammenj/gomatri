@@ -109,7 +109,7 @@ func main() {
 
 	r.GET("/login.html", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
-			"templates/login.html", "templates/header.html", "templates/footer.html"))
+			"templates/loginregister.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, nil)
 	})
 
