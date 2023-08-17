@@ -69,7 +69,8 @@ func (uh *UserHandler) DeleteUser(c *gin.Context) {
 func (uh *UserHandler) GetUser(c *gin.Context) {
 	log.Println("IN GET one handler")
 	id := c.Param("id")
-
+	value := c.GetHeader("Authorization")
+	log.Println("GetHeader in UserHandler controller :: ", value)
 	user, err := uh.store.GetOne(id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

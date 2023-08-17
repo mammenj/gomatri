@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minna Minni ©2023 - Home</title>
+    <link href="/static/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="/static/htmx.min.js" type="application/javascript"></script>
+</head>
+
+<body>
+    {{ template "headerHTML" . }}
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="/static/images/tnc.png" alt="Terms and Conditions" class="img-fluid" />
+                </div>
+            </div>
+            <div class="container">
+                {{ template "footerHTML" . }}
+            </div>
+        </div>
+    </main>
+    <script src="/static/bootstrap.bundle.min.js" type="application/javascript"></script>
+</body>
+
+</html>

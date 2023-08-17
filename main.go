@@ -10,15 +10,15 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
+
 	"strconv"
 
+	//"github.com/casbin/casbin"
+	"github.com/casbin/casbin"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 )
-
-type Film struct {
-	Title    string
-	Director string
-}
 
 //go:embed templates/*
 var templateFS embed.FS
@@ -29,8 +29,11 @@ var staticFiles embed.FS
 func main() {
 	r := gin.Default()
 
+	store := cookie.NewStore([]byte("secret"))
+	r.Use(sessions.Sessions("jwt-session", store))
+
 	r.Use(func(c *gin.Context) {
-		c.Header("User-Agent", "Unreal-molay")
+		c.Header("User-Agent", "Unreal-monay")
 	})
 
 	static, err := fs.Sub(staticFiles, "static")
@@ -41,6 +44,9 @@ func main() {
 	r.StaticFS("/static", http.FS(static))
 
 	/// TEST CODE FOR EMBED
+
+	e := casbin.NewEnforcer("authz_model.conf", "authz_policy.csv", true)
+	r.Use(security.NewJwtAuthorizer(e))
 
 	r.GET("/", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
@@ -99,17 +105,15 @@ func main() {
 		tmpl.Execute(c.Writer, nil)
 	})
 
-	r.POST("/films", func(c *gin.Context) {
-		title := c.PostForm("title")
-		director := c.PostForm("director")
-		tmpl := template.Must(template.ParseFS(templateFS,
-			"templates/index.html", "templates/header.html", "templates/footer.html"))
-		tmpl.ExecuteTemplate(c.Writer, "matri-list-element", Film{Title: title, Director: director})
-	})
-
 	r.GET("/login.html", func(c *gin.Context) {
 		tmpl := template.Must(template.ParseFS(templateFS,
 			"templates/loginregister.html", "templates/header.html", "templates/footer.html"))
+		tmpl.Execute(c.Writer, nil)
+	})
+
+	r.GET("/tnc.html", func(c *gin.Context) {
+		tmpl := template.Must(template.ParseFS(templateFS,
+			"templates/tnc.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, nil)
 	})
 

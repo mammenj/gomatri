@@ -1,4 +1,36 @@
 p, admin, /*, *
-p, anonymous, /login/*, *
-p, user, /v1/auth/users/*, *
-p, user, /login/*, *
+
+p, anonymous, /login*, *
+p, anonymous, /user*, *
+p, anonymous, /ads*, *
+p, anonymous, /brides*, *
+p, anonymous, /grooms*, *
+p, anonymous, /header*, *
+p, anonymous, /footer*, *
+p, anonymous, /index*, *
+p, anonymous, /*, *
+p, anonymous, /contact*, *
+p, anonymous, /tnc*, *
+
+p, user, /login*, *
+p, user, /user*, *
+p, user, /ads*, *
+p, user, /brides*, *
+p, user, /grooms*, *
+p, user, /header*, *
+p, user, /footer*, *
+p, user, /index*, *
+p, user, /, *
+p, user, /contact*, *
+p, user, /tnc*, *
+
+p, broker, /login*, *
+p, broker, /user*, *
+p, broker, /ads*, *
+p, broker, /header*, *
+p, broker, /footer*, *
+p, broker, /index*, *
+p, broker, /, *
+p, broker, /contact*, *
+p, broker, /tnc*, *
+

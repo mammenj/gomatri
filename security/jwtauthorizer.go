@@ -5,11 +5,12 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/casbin/casbin"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/joho/godotenv"
 )
 
 // NewJwtAuthorizer returns the authorizer, uses a Casbin enforcer as input
@@ -38,7 +39,7 @@ func (a *JwtAuthorizer) GetUserName(r *http.Request) string {
 // CheckPermission checks the user/method/path combination from the request.
 // Returns true (permission granted) or false (permission forbidden)
 func (a *JwtAuthorizer) CheckPermission(c *gin.Context) bool {
-	role := a.getRoles(c.Request)
+	role := a.getRoles(c)
 	method := c.Request.Method
 	path := c.Request.URL.Path
 	return a.enforcer.Enforce(role, path, method)
@@ -49,10 +50,25 @@ func (a *JwtAuthorizer) RequirePermission(c *gin.Context) {
 	c.AbortWithStatus(403)
 }
 
-func (a *JwtAuthorizer) getRoles(r *http.Request) string {
-	tokenString := r.Header.Get("Authorization")
-	splitToken := strings.Split(tokenString, "Bearer")
-	tokenString = strings.TrimSpace(splitToken[1])
+func (a *JwtAuthorizer) getRoles(c *gin.Context) string {
+	//
+	session := sessions.Default(c)
+	tokenSession := session.Get("jwt")
+	//log.Println("old jwt token:: ", tokenString)
+	tokenString := fmt.Sprintf("%v", tokenSession)
+
+	///
+	//tokenString := r.Header.Get("Authorization")
+	log.Println("IN Get Roles ", tokenString)
+	if tokenString == "" {
+		log.Println("tokenString is empty ")
+		return "anonymous"
+	}
+
+	//splitToken := strings.Split(tokenString, "Bearer")
+	log.Println("JwtAuthorizer Token String: ", tokenString)
+	//tokenString = strings.TrimSpace(splitToken[1])
+
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -63,12 +79,18 @@ func (a *JwtAuthorizer) getRoles(r *http.Request) string {
 		// }
 		//hmacSampleSecret := []byte(config.Jwtsecret)
 		// os.Getenv("API_KEY")
-		hmacSampleSecret := []byte(os.Getenv("SECRET"))
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
+		hmacSampleSecret := []byte(os.Getenv("JWT_SECRET"))
+
 		return hmacSampleSecret, nil
 	})
 	var role string
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		role, _ = claims["role"].(string)
+		log.Println("Role is ", role)
 	} else {
 		log.Println("Error getting claims:: ", err)
 	}
