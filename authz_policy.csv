@@ -25,6 +25,7 @@ p, user, /, *
 p, user, /contact*, *
 p, user, /tnc*, *
 p, user, /menu*, *
+p, user, /logout*, *
 
 p, broker, /login*, *
 p, broker, /user*, *

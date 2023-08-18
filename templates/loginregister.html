@@ -14,52 +14,56 @@
     {{ template "headerHTML" . }}
     <main class="my-2">
         <div class="container">
+
             <div class="row">
+
                 <div class="col-md-3">
                     <img src="/static/images/placeads.jpg" alt="" class="img-fluid" />
                 </div>
+                {{if .}}
+
                 <div class="col-md-9">
 
-                    {{if .}}
-                    <div id="authenticated" class="bg-info">
-                         Hello: {{.Name}}, you are a : {{.Role}}, Your ID: {{ .ID }}
+                    <div class="col-md-9 bg-info-subtle" id="test">
+                        ID: {{ .ID }}, Name: {{.Name}}, Role: {{.Role}}
                     </div>
-                    <div id="logout" class="bg-info">
-                        <button hx-post="/logout">Logout</button>
+                    <div id="logout" class="btn-info mt-1">
+                        <button hx-post="/logout" type="button" class="btn btn-primary">Logout</button>
                     </div>
                 </div>
+
+      
+
                 {{else}}
+                <div class="col-md-9">
 
-                <form hx-post="/login" hx-target="#loginresult" hx-swap="innerHTML">
-                    <div class="row g-3">
+                    <form hx-post="/login" hx-target="#loginresult" hx-swap="innerHTML">
+                        <div class="row g-3">
 
-                        <div class="col-sm-6 form-group">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" name="Email" id="email"
-                                placeholder="Enter your email." required>
+                            <div class="col-sm-6 form-group">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" name="Email" id="email"
+                                    placeholder="Enter your email." required>
+                            </div>
+
+
+
+                            <div class="col-sm-4 form-group">
+                                <label for="education" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="Password"
+                                    placeholder="Enter a password">
+                            </div>
+                            <div class="col-sm-12 form-group mb-2 my-2">
+                                <button class="btn btn-primary float-right">Submit</button>
+                            </div>
+
+
                         </div>
-
-
-
-                        <div class="col-sm-4 form-group">
-                            <label for="education" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="Password"
-                                placeholder="Enter a password">
-                        </div>
-                        <div class="col-sm-12 form-group mb-2 my-2">
-                            <button class="btn btn-primary float-right">Submit</button>
-                        </div>
-
-
-                    </div>
-
-
-                </form>
-                <div id="loginresult" class="bg-info">
-                    <!---- end -->
-                    ID: {{ .ID }}, Name: {{.Name}}, Role: {{.Role}}, Message: {{.Message}}
+                    </form>
+                    <div class="col-md-9 bg-info-subtle" id="loginresult"></div>
                 </div>
                 {{end}}
+
 
             </div>
         </div>

@@ -1,7 +1,6 @@
 package security
 
 import (
-	"embed"
 	"errors"
 	"fmt"
 	"gomatri/models"
@@ -23,23 +22,33 @@ import (
 	"github.com/gin-contrib/sessions"
 )
 
-//go:embed user.html
-var templateFS embed.FS
+var logoutTemplate *template.Template = template.Must(template.ParseFiles(
+	"templates/user.html"))
+
+func Logout(c *gin.Context) {
+	// get the user from db
+	//var user *models.User
+
+	session := sessions.Default(c)
+	session.Delete("jwt")
+	session.Clear()
+	session.Options(sessions.Options{Path: "/", MaxAge: -1}) // this sets the cookie with a MaxAge of 0
+	session.Save()
+	//c.Redirect(http.StatusTemporaryRedirect, "/")
+	c.Redirect(http.StatusFound, "/")
+
+}
 
 // Login for JWT
 func Login(c *gin.Context) {
 	// get the user from db
 	//var user *models.User
 
-	tmpl := template.Must(template.ParseFS(templateFS,
-		"user.html"))
 	user, err := loginUser(c)
 	log.Println("------>>>>> Login loginUser <<<<<<<< :", user)
 	session := sessions.Default(c)
 	current := session.Get("jwt")
 	log.Println("Current session ", current)
-
-	session.Clear()
 
 	if err != nil {
 		log.Println("Error when  trying to log in :", err)
@@ -48,7 +57,7 @@ func Login(c *gin.Context) {
 		//c.HTML(http.StatusOK, "templates/user.html", err)
 		//c.HTML(http.StatusOK, "user.html", err)
 		//c.String(http.StatusOK, err.Error(), nil)
-		tmpl.Execute(c.Writer, err.Error())
+		logoutTemplate.Execute(c.Writer, err.Error())
 		return
 	}
 	// Create the token
@@ -86,7 +95,7 @@ func Login(c *gin.Context) {
 	if err != nil {
 		log.Println("Could not generate token")
 		//c.JSON(500, gin.H{"message": "Could not generate token"})
-		tmpl.Execute(c.Writer, err.Error())
+		logoutTemplate.Execute(c.Writer, err.Error())
 		return
 	}
 	c.Header("Authorization", "Bearer "+tokenString)

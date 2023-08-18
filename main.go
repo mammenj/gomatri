@@ -31,6 +31,27 @@ import (
 // var templateFS fs.FS
 //var staticFiles fs.FS
 
+var rootTemplate *template.Template = template.Must(template.ParseFiles(
+	"templates/index.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
+
+var contactTemplate *template.Template = template.Must(template.ParseFiles(
+	"templates/contact.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
+
+var groomTemplate *template.Template = template.Must(template.ParseFiles(
+	"templates/grooms.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
+
+var brideTemplate *template.Template = template.Must(template.ParseFiles(
+	"templates/brides.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
+
+var placeAdsTemplate *template.Template = template.Must(template.ParseFiles(
+	"templates/placead.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
+
+var loginTemplate *template.Template = template.Must(template.ParseFiles(
+	"templates/loginregister.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
+
+var tncTemplate *template.Template = template.Must(template.ParseFiles(
+	"templates/tnc.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
+
 func main() {
 
 	err := godotenv.Load()
@@ -64,21 +85,11 @@ func main() {
 	r.Use(security.NewJwtAuthorizer(e))
 
 	r.GET("/", func(c *gin.Context) {
-		tmpl := template.Must(template.ParseFiles(
-			"templates/index.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
-		tmpl.Execute(c.Writer, nil)
-	})
-
-	r.GET("/matri.html", func(c *gin.Context) {
-		tmpl := template.Must(template.ParseFiles(
-			"templates/matri.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
-		tmpl.Execute(c.Writer, nil)
+		rootTemplate.Execute(c.Writer, nil)
 	})
 
 	r.GET("/contact.html", func(c *gin.Context) {
-		tmpl := template.Must(template.ParseFiles(
-			"templates/contact.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
-		tmpl.Execute(c.Writer, nil)
+		contactTemplate.Execute(c.Writer, nil)
 	})
 
 	r.GET("/grooms.html", func(c *gin.Context) {
@@ -92,9 +103,7 @@ func main() {
 			return
 		}
 		admap := map[string][]models.Ad{"Ads": ads}
-		tmpl := template.Must(template.ParseFiles(
-			"templates/grooms.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
-		tmpl.Execute(c.Writer, admap)
+		groomTemplate.Execute(c.Writer, admap)
 	})
 
 	r.GET("/brides.html", func(c *gin.Context) {
@@ -108,30 +117,23 @@ func main() {
 			return
 		}
 		admap := map[string][]models.Ad{"Ads": ads}
-		tmpl := template.Must(template.ParseFiles(
-			"templates/brides.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
-		tmpl.Execute(c.Writer, admap)
+		brideTemplate.Execute(c.Writer, admap)
 	})
 
 	r.GET("/ads.html", func(c *gin.Context) {
-		tmpl := template.Must(template.ParseFiles(
-			"templates/placead.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
-		tmpl.Execute(c.Writer, nil)
+		placeAdsTemplate.Execute(c.Writer, nil)
 	})
 
 	r.GET("/login.html", func(c *gin.Context) {
 
 		user := auth.GetLoggedInUser(c)
-		log.Println("Logged in User is :::::",user)
-		tmpl := template.Must(template.ParseFiles(
-			"templates/loginregister.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
-		tmpl.Execute(c.Writer, user)
+		log.Println("Logged in User is :::::", user)
+		loginTemplate.Execute(c.Writer, user)
 	})
 
 	r.GET("/tnc.html", func(c *gin.Context) {
-		tmpl := template.Must(template.ParseFiles(
-			"templates/tnc.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
-		tmpl.Execute(c.Writer, nil)
+
+		tncTemplate.Execute(c.Writer, nil)
 	})
 
 	/// TEST CODE FOR EMBED END
@@ -143,6 +145,7 @@ func main() {
 	r.DELETE("/users/:id", userHandler.DeleteUser)
 	r.GET("/users/:id", userHandler.GetUser)
 	r.POST("/login", security.Login)
+	r.POST("/logout", security.Logout)
 
 	adHandler := handlers.CreateNewAdHandler()
 	r.POST("/ads", adHandler.CreateAd)
