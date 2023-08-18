@@ -44,7 +44,7 @@ func main() {
 	r.Use(sessions.Sessions("jwt-session", store))
 
 	r.Use(func(c *gin.Context) {
-		c.Header("User-Agent", "Unreal-monay")
+		c.Header("User-Agent", "Unreal-Minna_Minny")
 	})
 
 	//static, err := fs.Sub(staticFiles, "static")
@@ -58,6 +58,9 @@ func main() {
 	/// TEST CODE FOR EMBED
 
 	e := casbin.NewEnforcer("authz_model.conf", "authz_policy.csv", true)
+
+	auth := security.NewJwtAuth(e)
+
 	r.Use(security.NewJwtAuthorizer(e))
 
 	r.GET("/", func(c *gin.Context) {
@@ -89,7 +92,6 @@ func main() {
 			return
 		}
 		admap := map[string][]models.Ad{"Ads": ads}
-		//log.Println("Ad Map", admap)
 		tmpl := template.Must(template.ParseFiles(
 			"templates/grooms.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
 		tmpl.Execute(c.Writer, admap)
@@ -118,9 +120,12 @@ func main() {
 	})
 
 	r.GET("/login.html", func(c *gin.Context) {
+
+		user := auth.GetLoggedInUser(c)
+		log.Println("Logged in User is :::::",user)
 		tmpl := template.Must(template.ParseFiles(
 			"templates/loginregister.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
-		tmpl.Execute(c.Writer, nil)
+		tmpl.Execute(c.Writer, user)
 	})
 
 	r.GET("/tnc.html", func(c *gin.Context) {

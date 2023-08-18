@@ -3,6 +3,7 @@ package security
 import (
 	"embed"
 	"errors"
+	"fmt"
 	"gomatri/models"
 	"gomatri/storage"
 	"html/template"
@@ -33,7 +34,7 @@ func Login(c *gin.Context) {
 	tmpl := template.Must(template.ParseFS(templateFS,
 		"user.html"))
 	user, err := loginUser(c)
-
+	log.Println("------>>>>> Login loginUser <<<<<<<< :", user)
 	session := sessions.Default(c)
 	current := session.Get("jwt")
 	log.Println("Current session ", current)
@@ -57,10 +58,15 @@ func Login(c *gin.Context) {
 	// if user.Username == "admin" {
 	// 	role = "admin"
 	// }
+	strUserID := fmt.Sprintf("%v", user.ID)
+	log.Println("------>>>>> Login USERID <<<<<<<< :", strUserID)
+	//tokenString := fmt.Sprintf("%v", tokenSession)
 	token.Claims = jwt_lib.MapClaims{
-		"username": user.Email,
-		"expiry":   time.Now().Add(time.Hour * 1).Unix(),
-		"role":     user.Role,
+
+		"userid": strUserID,
+		"name":   user.Name,
+		"expiry": time.Now().Add(time.Hour * 1).Unix(),
+		"role":   user.Role,
 	}
 	// Sign and get the complete encoded token as a string
 	//config, err := config.GetConfiguration("config.json")
@@ -129,5 +135,6 @@ func loginUser(c *gin.Context) (*models.User, error) {
 	if !success {
 		return nil, errors.New("invalid user/password")
 	}
+
 	return &user, nil
 }
