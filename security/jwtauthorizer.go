@@ -88,6 +88,9 @@ func (a *JwtAuthorizer) getRoles(c *gin.Context) string {
 		return hmacSampleSecret, nil
 	})
 	var role string
+	if token == nil {
+		return "anonymous"
+	}
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		role, _ = claims["role"].(string)
 		log.Println("Role is ", role)
