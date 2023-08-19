@@ -10,9 +10,16 @@
                     <li class="nav-item">
                         <a class="nav-link"  href="/brides.html">Brides Wanted</a>
                     </li>
+                    {{if ne .User.Name ""}}
                     <li class="nav-item">
-                        <a class="nav-link"   href="/login.html">Login / Register</a>
+                        <a class="nav-link"   href="/login.html">Logout</a>
                     </li>
+                    {{else}}
+        
+                    <li class="nav-item">
+                        <a class="nav-link"   href="/login.html">Login</a>
+                    </li>
+                    {{end}}
 
                 </ul>
             </div>

@@ -52,6 +52,9 @@ var loginTemplate *template.Template = template.Must(template.ParseFiles(
 var tncTemplate *template.Template = template.Must(template.ParseFiles(
 	"templates/tnc.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
 
+var logoutTemplate *template.Template = template.Must(template.ParseFiles(
+	"templates/user.html"))
+
 type pageData struct {
 	User  models.User
 	AdMap map[string][]models.Ad
@@ -82,11 +85,25 @@ func main() {
 	r.Use(security.NewJwtAuthorizer(e))
 
 	r.GET("/", func(c *gin.Context) {
-		rootTemplate.Execute(c.Writer, nil)
+		var page pageData
+
+		user := auth.GetLoggedInUser(c)
+		if user != nil {
+
+			page = pageData{*user, nil}
+		} else {
+			page = pageData{models.User{Name: ""}, nil}
+		}
+		rootTemplate.Execute(c.Writer, page)
 	})
 
 	r.GET("/contact.html", func(c *gin.Context) {
-		contactTemplate.Execute(c.Writer, nil)
+		var page pageData
+		user := auth.GetLoggedInUser(c)
+		if user != nil {
+			page = pageData{*user, nil}
+		}
+		contactTemplate.Execute(c.Writer, page)
 	})
 
 	r.GET("/grooms.html", func(c *gin.Context) {
@@ -100,7 +117,16 @@ func main() {
 			return
 		}
 		admap := map[string][]models.Ad{"Ads": ads}
-		groomTemplate.Execute(c.Writer, admap)
+		var page pageData
+		user := auth.GetLoggedInUser(c)
+		if user != nil {
+			log.Println("In groom user !=null ")
+			page = pageData{*user, admap}
+		} else {
+			page = pageData{models.User{}, admap}
+		}
+
+		groomTemplate.Execute(c.Writer, page)
 	})
 
 	r.GET("/brides.html", func(c *gin.Context) {
@@ -148,8 +174,12 @@ func main() {
 	})
 
 	r.GET("/tnc.html", func(c *gin.Context) {
-
-		tncTemplate.Execute(c.Writer, nil)
+		var page pageData
+		user := auth.GetLoggedInUser(c)
+		if user != nil {
+			page = pageData{*user, nil}
+		}
+		tncTemplate.Execute(c.Writer, page)
 	})
 
 	/// TEST CODE FOR EMBED END
@@ -171,7 +201,8 @@ func main() {
 		session.Options(sessions.Options{Path: "/", MaxAge: -1}) // this sets the cookie with a MaxAge of 0
 		session.Save()
 		//c.Redirect(http.StatusTemporaryRedirect, "/")
-		c.Redirect(http.StatusFound, "/")
+		//c.Redirect(http.StatusFound, "/")
+		logoutTemplate.Execute(c.Writer, "Logged Out")
 
 	})
 

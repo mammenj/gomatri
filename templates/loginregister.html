@@ -24,8 +24,9 @@
                         ID: {{.User.ID }}, Name: {{.User.Name}}, Role: {{.User.Role}}
                     </div>
                     <div id="logout" class="btn-info mt-1">
-                        <button hx-post="/logout" type="button" class="btn btn-primary">Logout</button>
+                        <button hx-post="/logout" type="button" hx-target="#logoutresult" class="btn btn-primary">Logout</button>
                     </div>
+                    <div class="col-md-9 bg-info-subtle" id="logoutresult"></div>
                 </div>
                 {{else}}
                 <div class="col-md-9">

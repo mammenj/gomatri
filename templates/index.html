@@ -19,7 +19,13 @@
                     <img src="/static/images/molay3.jpg" alt="" class="img-fluid" />
                 </div>
                 <div class="col-md-9">
-                    <h3 class="mt-2">Welcome to Minna Minni ©2023</h2>
+                    <h2 class="mt-2">Welcome to Minna Minni ©2023</h2>
+                    {{if ne .User.ID 0}}
+                    <div class="bg-info-subtle col-md-3 px-2 my-1 py-1">
+                        Welcome {{.User.Name}} !!
+
+                    </div>
+                    {{end}}
                     <p class="mt-3">
                         Best place to find your match, no hassle of membership, pay only once!
                         Place your ad and wait for the calls to come in!
