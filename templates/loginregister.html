@@ -14,40 +14,28 @@
     {{ template "headerHTML" . }}
     <main class="my-2">
         <div class="container">
-
             <div class="row">
-
                 <div class="col-md-3">
                     <img src="/static/images/placeads.jpg" alt="" class="img-fluid" />
                 </div>
-                {{if .}}
-
+                {{if ne .User.ID 0}}
                 <div class="col-md-9">
-
                     <div class="col-md-9 bg-info-subtle" id="test">
-                        ID: {{ .ID }}, Name: {{.Name}}, Role: {{.Role}}
+                        ID: {{.User.ID }}, Name: {{.User.Name}}, Role: {{.User.Role}}
                     </div>
                     <div id="logout" class="btn-info mt-1">
                         <button hx-post="/logout" type="button" class="btn btn-primary">Logout</button>
                     </div>
                 </div>
-
-      
-
                 {{else}}
                 <div class="col-md-9">
-
                     <form hx-post="/login" hx-target="#loginresult" hx-swap="innerHTML">
                         <div class="row g-3">
-
                             <div class="col-sm-6 form-group">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" name="Email" id="email"
                                     placeholder="Enter your email." required>
                             </div>
-
-
-
                             <div class="col-sm-4 form-group">
                                 <label for="education" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="Password"
@@ -56,90 +44,76 @@
                             <div class="col-sm-12 form-group mb-2 my-2">
                                 <button class="btn btn-primary float-right">Submit</button>
                             </div>
-
-
                         </div>
                     </form>
                     <div class="col-md-9 bg-info-subtle" id="loginresult"></div>
                 </div>
                 {{end}}
-
-
             </div>
-        </div>
-        <div class="container my-3 bg-dark-subtle">
-            <form hx-post="/users" hx-target="#registerresult" hx-swap="innerHTML">
-                <div class="row g-3">
-                    <div class="col-sm-12">
-                        <h2 class="text-center text-bg-dark">Register As Bride, Groom or Third Party Agents</h2>
+            <div class="container my-3 bg-dark-subtle">
+                <form hx-post="/users" hx-target="#registerresult" hx-swap="innerHTML">
+                    <div class="row g-3">
+                        <div>
+                            <h2 class="text-center text-bg-dark">Register As Bride, Groom or Third Party Agents</h2>
+                        </div>
+                        <div class="col-sm-12">
+                            <p class="text-start">Enter the prospective grooms or brides details. All ads will be
+                                subject to review.
+                                Any misrepresentation will be reported to the authorities. We log all IPs and other
+                                details to prevent misuse of the service.
+                                Please note that you agree to the terms and conditions upon submitting an ad to this
+                                site.
+                            </p>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="name-full" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="Name" id="name-full"
+                                placeholder="Enter your full name." required>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="Email" id="email" placeholder="Enter your email."
+                                required>
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <label for="education" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="Password"
+                                placeholder="Enter a password">
+                        </div>
+                        <div class="col-sm-4 form-group">
+                            <label for="education" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="Password"
+                                placeholder="Repeat your password">
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="role" class="form-label">Register As</label>
+                            <select class="form-control browser-default custom-select" name="Role">
+                                <option value="user" selected>Bride or Groom
+                                </option>
+                                <option value="broker">Broker Agent or Third Party</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="tel" class="form-label">Phone</label>
+                            <input type="tel" name="Message" class="form-control" id="message"
+                                placeholder="Enter Your Contact Number.">
+                        </div>
+                        <div class="col-sm-12">
+                            <input type="checkbox" class="form-check d-inline" name="terms" id="chb" required><label
+                                for="chb" class="form-check-label">&nbsp;I accept all terms and conditions.
+                            </label>
+                        </div>
+                        <div class="col-sm-12 form-group mb-2 my-2">
+                            <button class="btn btn-primary float-right">Submit</button>
+                        </div>
                     </div>
-                    <div class="col-sm-12">
-                        <p class="text-start">Enter the prospective grooms or brides details. All ads will be
-                            subject to review.
-                            Any misrepresentation will be reported to the authorities. We log all IPs and other
-                            details to prevent misuse of the service.
-                            Please note that you agree to the terms and conditions upon submitting an ad to this
-                            site.
-                        </p>
-                    </div>
-                    <div class="col-sm-6 form-group">
-                        <label for="name-full" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" name="Name" id="name-full"
-                            placeholder="Enter your full name." required>
-                    </div>
-                    <div class="col-sm-6 form-group">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="Email" id="email" placeholder="Enter your email."
-                            required>
-                    </div>
-
-
-
-                    <div class="col-sm-4 form-group">
-                        <label for="education" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="Password"
-                            placeholder="Enter a password">
-                    </div>
-                    <div class="col-sm-4 form-group">
-                        <label for="education" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="Password"
-                            placeholder="Repeat your password">
-                    </div>
-
-
-
-                    <div class="col-sm-6 form-group">
-                        <label for="role" class="form-label">Register As</label>
-                        <select class="form-control browser-default custom-select" name="Role">
-                            <option value="user" selected>Bride or Groom
-                            </option>
-                            <option value="broker">Broker Agent or Third Party</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6 form-group">
-                        <label for="tel" class="form-label">Phone</label>
-                        <input type="tel" name="Message" class="form-control" id="message"
-                            placeholder="Enter Your Contact Number.">
-                    </div>
-
-                    <div class="col-sm-12">
-                        <input type="checkbox" class="form-check d-inline" name="terms" id="chb" required><label
-                            for="chb" class="form-check-label">&nbsp;I accept all terms and conditions.
-                        </label>
-                    </div>
-
-                    <div class="col-sm-12 form-group mb-2 my-2">
-                        <button class="btn btn-primary float-right">Submit</button>
-                    </div>
-
+                </form>
+                <div id="registerresult" class="bg-info">
+                    <!---- end -->
                 </div>
-            </form>
-            <div id="registerresult" class="bg-info">
-                <!---- end -->
             </div>
         </div>
-        </div>
-
+ 
     </main>
     <div class="container">
         {{ template "footerHTML" . }}

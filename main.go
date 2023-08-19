@@ -52,6 +52,11 @@ var loginTemplate *template.Template = template.Must(template.ParseFiles(
 var tncTemplate *template.Template = template.Must(template.ParseFiles(
 	"templates/tnc.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
 
+type pageData struct {
+	User  models.User
+	AdMap map[string][]models.Ad
+}
+
 func main() {
 
 	err := godotenv.Load()
@@ -68,15 +73,7 @@ func main() {
 		c.Header("User-Agent", "Unreal-Minna_Minny")
 	})
 
-	//static, err := fs.Sub(staticFiles, "static")
-	//if err != nil {
-	//	panic(err)
-	//}
-
 	r.StaticFS("/static", http.Dir("static"))
-	//r.StaticFS("/static", http.FS(static))
-
-	/// TEST CODE FOR EMBED
 
 	e := casbin.NewEnforcer("authz_model.conf", "authz_policy.csv", true)
 
@@ -107,6 +104,7 @@ func main() {
 	})
 
 	r.GET("/brides.html", func(c *gin.Context) {
+		var page pageData
 		adStore := storage.NewSqliteAdsStore()
 		offset := c.Query("offset")
 		offsetInt, _ := strconv.Atoi(offset)
@@ -117,18 +115,36 @@ func main() {
 			return
 		}
 		admap := map[string][]models.Ad{"Ads": ads}
-		brideTemplate.Execute(c.Writer, admap)
+		//brideTemplate.Execute(c.Writer, admap)
+		user := auth.GetLoggedInUser(c)
+		if user != nil {
+			log.Println("In bride user !=null ")
+			page = pageData{*user, admap}
+		} else {
+			page = pageData{models.User{}, admap}
+		}
+		//log.Println("Page in brides ", page)
+		brideTemplate.Execute(c.Writer, page)
 	})
 
 	r.GET("/ads.html", func(c *gin.Context) {
-		placeAdsTemplate.Execute(c.Writer, nil)
+		var page pageData
+		user := auth.GetLoggedInUser(c)
+		if user != nil {
+			page = pageData{*user, nil}
+		}
+		placeAdsTemplate.Execute(c.Writer, page)
 	})
 
 	r.GET("/login.html", func(c *gin.Context) {
-
+		var page pageData
 		user := auth.GetLoggedInUser(c)
-		log.Println("Logged in User is :::::", user)
-		loginTemplate.Execute(c.Writer, user)
+		if user != nil {
+			page = pageData{*user, nil}
+		}
+
+		log.Println("Logged in Page is :::::", page)
+		loginTemplate.Execute(c.Writer, page)
 	})
 
 	r.GET("/tnc.html", func(c *gin.Context) {
@@ -145,7 +161,19 @@ func main() {
 	r.DELETE("/users/:id", userHandler.DeleteUser)
 	r.GET("/users/:id", userHandler.GetUser)
 	r.POST("/login", security.Login)
-	r.POST("/logout", security.Logout)
+	r.POST("/logout", func(c *gin.Context) {
+
+		session := sessions.Default(c)
+		mypage := pageData{models.User{}, nil}
+		log.Println(mypage)
+		session.Delete("jwt")
+		session.Clear()
+		session.Options(sessions.Options{Path: "/", MaxAge: -1}) // this sets the cookie with a MaxAge of 0
+		session.Save()
+		//c.Redirect(http.StatusTemporaryRedirect, "/")
+		c.Redirect(http.StatusFound, "/")
+
+	})
 
 	adHandler := handlers.CreateNewAdHandler()
 	r.POST("/ads", adHandler.CreateAd)

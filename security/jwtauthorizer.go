@@ -59,10 +59,10 @@ func (a *JwtAuthorizer) RequirePermission(c *gin.Context) {
 
 func (a *JwtAuthorizer) GetLoggedInUser(c *gin.Context) *models.User {
 	session := sessions.Default(c)
-
+	var user *models.User
 	tokenSession := session.Get("jwt")
 	if tokenSession == nil {
-		return nil
+		return user
 	}
 	tokenString := fmt.Sprintf("%v", tokenSession)
 	if tokenString == "" {
@@ -88,7 +88,6 @@ func (a *JwtAuthorizer) GetLoggedInUser(c *gin.Context) *models.User {
 		return nil
 	}
 
-	var user *models.User
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		log.Println("IN GetLoggedInUser getting claims")
 
