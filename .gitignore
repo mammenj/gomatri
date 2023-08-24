@@ -1,6 +1,4 @@
 .env
 *.txt
-*.db
 gomatri
 *.sql
-matri.*
