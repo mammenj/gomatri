@@ -1,4 +1,6 @@
-# go matrimony 
+# go matrimony
+Its a simple matrimony site, which alows user to register and post their ad. Also they will be able to view ads.
+
 ### This is a poc for HTMX
 
 ### For android build, using termx
