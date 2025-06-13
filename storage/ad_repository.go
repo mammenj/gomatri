@@ -2,12 +2,12 @@ package storage
 
 import (
 	"fmt"
-	"gomatri/models"
 	"log"
 
 	"gorm.io/driver/sqlite"
-	//"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
+
+	"gomatri/models"
 )
 
 type AdSqlliteStore struct {
@@ -27,7 +27,6 @@ func NewSqliteAdsStore() *AdSqlliteStore {
 
 func (as *AdSqlliteStore) Create(ad *models.Ad) (string, error) {
 	log.Println("Before migrate......ADS")
-	//as.DB.AutoMigrate(ad)
 	log.Println("...... After migrate ADS")
 	result := as.DB.Create(ad)
 	if result.Error != nil {
@@ -49,11 +48,17 @@ func (as *AdSqlliteStore) Get() ([]models.Ad, error) {
 	return ads, nil
 }
 
-func (as *AdSqlliteStore) GetSection(section string, offset int) ([]models.Ad, error) {
+func (as *AdSqlliteStore) GetSection(
+	section string,
+	offset int,
+) ([]models.Ad, error) {
 	var ads []models.Ad
 	log.Println("Get Ads section ", section)
 	// db.Limit(10).Offset(5).Find(&users)
-	result := as.DB.Limit(10).Offset(offset).Where("section = ?", section).Find(&ads)
+	result := as.DB.Limit(10).
+		Offset(offset).
+		Where("section = ?", section).
+		Find(&ads)
 
 	if result.Error != nil {
 		return nil, result.Error
