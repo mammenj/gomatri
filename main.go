@@ -2,17 +2,19 @@ package main
 
 import (
 	//"embed"
+	"fmt"
 	"gomatri/handlers"
 	"gomatri/models"
 	"gomatri/security"
 	"gomatri/storage"
 	"html/template"
+	"net"
+	"strings"
 
 	//"io/fs"
 	"log"
 	"net/http"
 	"os"
-
 	"strconv"
 
 	"github.com/casbin/casbin"
@@ -29,8 +31,7 @@ import (
 //var staticFiles embed.FS
 
 // var templateFS fs.FS
-//var staticFiles fs.FS
-
+// var staticFiles fs.FS
 var rootTemplate *template.Template = template.Must(template.ParseFiles(
 	"templates/index.html", "templates/menu.html", "templates/header.html", "templates/footer.html"))
 
@@ -60,16 +61,35 @@ type pageData struct {
 	AdMap map[string][]models.Ad
 }
 
-func main() {
+func isValidEmail(email string) (bool, error) {
+	// Split the email into local part and domain
+	parts := strings.Split(email, "@")
+	if len(parts) != 2 {
+		return false, fmt.Errorf("invalid email format")
+	}
+	domain := parts[1]
+	// Lookup MX records for the domain
+	mxRecords, err := net.LookupMX(domain)
+	log.Println("MX Record is  ", mxRecords)
+	if err != nil {
+		log.Println("MX Record errors  ", err.Error())
+		return false, err
+	}
+	log.Println("Valid MX Record #", len(mxRecords))
+	// If there are MX records, the domain is valid
+	return len(mxRecords) > 0, nil
+}
 
+func main() {
+	isValidEmail("sere@s1_.com")
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	cookie_secret := []byte(os.Getenv("COOKIE_SECRET"))
+	cookieSecret := []byte(os.Getenv("COOKIE_SECRET"))
 	r := gin.Default()
 
-	store := cookie.NewStore([]byte(cookie_secret))
+	store := cookie.NewStore([]byte(cookieSecret))
 	r.Use(sessions.Sessions("jwt-session", store))
 
 	r.Use(func(c *gin.Context) {
@@ -89,7 +109,6 @@ func main() {
 
 		user := auth.GetLoggedInUser(c)
 		if user != nil {
-
 			page = pageData{*user, nil}
 		} else {
 			page = pageData{models.User{Name: ""}, nil}
@@ -141,7 +160,7 @@ func main() {
 			return
 		}
 		admap := map[string][]models.Ad{"Ads": ads}
-		//brideTemplate.Execute(c.Writer, admap)
+		// brideTemplate.Execute(c.Writer, admap)
 		user := auth.GetLoggedInUser(c)
 		if user != nil {
 			log.Println("In bride user !=null ")
@@ -149,7 +168,7 @@ func main() {
 		} else {
 			page = pageData{models.User{}, admap}
 		}
-		//log.Println("Page in brides ", page)
+		// log.Println("Page in brides ", page)
 		brideTemplate.Execute(c.Writer, page)
 	})
 
@@ -192,7 +211,6 @@ func main() {
 	r.GET("/users/:id", userHandler.GetUser)
 	r.POST("/login", security.Login)
 	r.POST("/logout", func(c *gin.Context) {
-
 		session := sessions.Default(c)
 		mypage := pageData{models.User{}, nil}
 		log.Println(mypage)
@@ -200,10 +218,9 @@ func main() {
 		session.Clear()
 		session.Options(sessions.Options{Path: "/", MaxAge: -1}) // this sets the cookie with a MaxAge of 0
 		session.Save()
-		//c.Redirect(http.StatusTemporaryRedirect, "/")
-		//c.Redirect(http.StatusFound, "/")
+		// c.Redirect(http.StatusTemporaryRedirect, "/")
+		// c.Redirect(http.StatusFound, "/")
 		logoutTemplate.Execute(c.Writer, "Logged Out")
-
 	})
 
 	adHandler := handlers.CreateNewAdHandler()
