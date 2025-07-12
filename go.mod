@@ -1,6 +1,6 @@
 module gomatri
 
-go 1.21
+go 1.24
 
 require (
 	github.com/casbin/casbin v1.9.1
