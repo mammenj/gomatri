@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"log"
 
+	// "gorm.io/driver/sqlite"
+	"gomatri/models"
+
+	_ "github.com/glebarez/go-sqlite"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-
-	"gomatri/models"
 )
 
 type AdSqlliteStore struct {

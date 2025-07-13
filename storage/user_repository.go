@@ -5,12 +5,13 @@ import (
 	"gomatri/models"
 	"log"
 
-	"gorm.io/driver/sqlite"
+	// "gorm.io/driver/sqlite"
 	//"github.com/glebarez/sqlite"
-	//"database/sql"
 
+	_ "github.com/glebarez/go-sqlite"
+	//"gorm.io/driver/sqlite"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-
 	//_ "modernc.org/sqlite"
 )
 
